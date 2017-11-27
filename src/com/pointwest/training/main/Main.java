@@ -1,15 +1,12 @@
 package com.pointwest.training.main;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-
-import com.pointwest.training.dao.BaseDao;
+import com.pointwest.training.ui.MainHandlerUI;
 
 public class Main {
 
 	public static void main(String[] args) {
+		MainHandlerUI main = new MainHandlerUI();
+		main.Main();
 	}
 
 }

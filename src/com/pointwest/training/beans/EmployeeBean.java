@@ -1,6 +1,5 @@
 package com.pointwest.training.beans;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class EmployeeBean {
@@ -10,17 +9,8 @@ public class EmployeeBean {
 	private String employeeRole;
 	private String employeeFirstName;
 	private String employeeLastName;
-	private List<String> teamProject;
-	
-	// Employee Seat Info
-	private String seatBldg;
-	private int seatFlrNum;
-	private String seatQuadrant;
-	private int seatRowNum;
-	private int seatColumnNum;
-	private int localNumber;
-	
-	private HashMap<String, Seat> seatByBuilding = new HashMap<String, SeatInfo>();
+	private List<String> employeeProject;
+	private SeatBean seat = new SeatBean();
 	
 	// Getters and Setters
 	public int getEmployeeId() {
@@ -28,6 +18,12 @@ public class EmployeeBean {
 	}
 	public void setEmployeeId(int employeeId) {
 		this.employeeId = employeeId;
+	}
+	public SeatBean getSeat() {
+		return seat;
+	}
+	public void setSeat(SeatBean seat) {
+		this.seat = seat;
 	}
 	public String getEmployeeRole() {
 		return employeeRole;
@@ -48,46 +44,9 @@ public class EmployeeBean {
 		this.employeeLastName = employeeLastName;
 	}
 	public List<String> getTeamProject() {
-		return teamProject;
+		return employeeProject;
 	}
 	public void setTeamProject(List<String> teamProject) {
-		this.teamProject = teamProject;
+		this.employeeProject = teamProject;
 	}
-	public String getSeatBldg() {
-		return seatBldg;
-	}
-	public void setSeatBldg(String seatBldg) {
-		this.seatBldg = seatBldg;
-	}
-	public int getSeatFlrNum() {
-		return seatFlrNum;
-	}
-	public void setSeatFlrNum(int seatFlrNum) {
-		this.seatFlrNum = seatFlrNum;
-	}
-	public String getSeatQuadrant() {
-		return seatQuadrant;
-	}
-	public void setSeatQuadrant(String seatQuadrant) {
-		this.seatQuadrant = seatQuadrant;
-	}
-	public int getSeatRowNum() {
-		return seatRowNum;
-	}
-	public void setSeatRowNum(int seatRowNum) {
-		this.seatRowNum = seatRowNum;
-	}
-	public int getSeatColumnNum() {
-		return seatColumnNum;
-	}
-	public void setSeatColumnNum(int seatColumnNum) {
-		this.seatColumnNum = seatColumnNum;
-	}
-	public int getLocalNumber() {
-		return localNumber;
-	}
-	public void setLocalNumber(int localNumber) {
-		this.localNumber = localNumber;
-	}
-	
 }
