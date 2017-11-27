@@ -1,9 +1,19 @@
 package com.pointwest.training.ui;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
 import com.pointwest.training.beans.UserBean;
 import com.pointwest.training.constants.Constants;
 
-public class HomePageUI {
+public class HomePageUI extends ParentUI {
+	
+	Scanner scan = new Scanner(System.in);
+	
+	List<String> validInputs = new ArrayList<>(Arrays.asList("1", "2", "3"));
+	
 	public void displayHomePage(UserBean user) {
 		
 		String firstName = user.getUserFirstName();
@@ -21,5 +31,7 @@ public class HomePageUI {
 		System.out.println(Constants.OPT_1 + Constants.SEARCH);
 		System.out.println(Constants.OPT_2 + Constants.VIEWSEATPLAN);
 		System.out.println(Constants.OPT_3 + Constants.LOGOUT);
+
 	}
+	
 }

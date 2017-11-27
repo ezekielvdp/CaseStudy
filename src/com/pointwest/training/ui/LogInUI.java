@@ -2,6 +2,8 @@ package com.pointwest.training.ui;
 
 import java.util.Scanner;
 
+import javax.naming.CommunicationException;
+
 import com.pointwest.training.beans.UserBean;
 import com.pointwest.training.constants.Constants;
 import com.pointwest.training.exception.DaoException;
@@ -27,7 +29,7 @@ public class LogInUI {
 	}
 	
 	public void displayInvalidLogIn() {
-		System.out.println("The username/password you've inputted is invalid.");
+		System.out.println("The username/password you've inputted is invalid. Please Try Again.");
 	}
 	
 	public String inputUserName() {

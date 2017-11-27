@@ -1,5 +1,7 @@
 package com.pointwest.training.service;
 
+import javax.naming.CommunicationException;
+
 import com.pointwest.training.beans.UserBean;
 import com.pointwest.training.dao.LogInDao;
 import com.pointwest.training.exception.DaoException;

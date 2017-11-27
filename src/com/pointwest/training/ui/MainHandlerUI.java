@@ -1,5 +1,7 @@
 package com.pointwest.training.ui;
 
+import javax.naming.CommunicationException;
+
 import com.pointwest.training.beans.UserBean;
 import com.pointwest.training.exception.DaoException;
 
@@ -9,29 +11,53 @@ public class MainHandlerUI {
 		LogInUI loginUI = new LogInUI();
 
 		UserBean user = null;
-		
+
 		boolean isCorrectCredential = false;
-		
+		boolean isExceptionOccured = false;
+
+		// Log-In Module
 		do {
 			try {
 				user = loginUI.LogInMenu();
 				isCorrectCredential = user != null;
-			} catch (DaoException de) {
-				System.out.println(de.getMessage());
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
-			
-			if(!isCorrectCredential) {
-				loginUI.displayInvalidLogIn();
-			}
-		} while (!isCorrectCredential);
-		
-		// Display Homepage when correctCredential
-		if (isCorrectCredential) {
-			HomePageUI homepageUI = new HomePageUI();
 
-			homepageUI.displayHomePage(user);
+				if (!isCorrectCredential) {
+					loginUI.displayInvalidLogIn();
+				}
+
+			} catch (DaoException de) {
+				isExceptionOccured = true;
+				System.out.println(de.getUserFriendlyErrorMessage());
+				System.out.println("Terminating program.");
+			}
+
+		} while (!isExceptionOccured && !isCorrectCredential);
+
+		// Display Homepage when Credential is correct
+		if (isCorrectCredential) {
+			
+			// Initialization
+			HomePageUI homepageUI = new HomePageUI();
+			boolean isValidInput = false;
+			
+			// Loops until valid input is entered.
+			do {
+				homepageUI.displayHomePage(user);
+				
+				String choice = homepageUI.getChoice();
+				isValidInput = homepageUI.validInputs.contains(choice);
+				
+				switch (choice) {
+				case "1": // Search
+					break;
+				case "2": // View Seatplan
+					break;
+				case "3": // Logout
+					break;
+				default: // Error handling
+					System.out.println("Invalid input. Try Again!"); 
+				}
+			} while(!isValidInput);
 		}
 
 	}

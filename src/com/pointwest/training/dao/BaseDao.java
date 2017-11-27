@@ -33,9 +33,9 @@ public class BaseDao {
 
 			logger.info("Connected to Database: " + conn);
 		} catch (ClassNotFoundException e) {
-			throw new DaoException(e, "something");
+			throw new DaoException(e, "ClassNotFound: Error connecting to Database.");
 		} catch (Exception e) {
-			throw new DaoException(e, "something");
+			throw new DaoException(e, "Error Connecting to Database");
 		}
 
 		return conn;

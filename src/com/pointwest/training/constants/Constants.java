@@ -13,6 +13,8 @@ public class Constants {
 	public static final String HEADER_MENU = "MENU:";
 	public static final String BY = "By ";
 	
+	public static final String CHOOSE = "Please Choose: ";
+	
 	// Log In
 	public static final String HEADER_LOGIN = "LOGIN";
 	public static final String UNAME = "Username: ";
