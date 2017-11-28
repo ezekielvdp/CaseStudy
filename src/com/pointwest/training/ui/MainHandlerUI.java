@@ -1,7 +1,5 @@
 package com.pointwest.training.ui;
 
-import javax.naming.CommunicationException;
-
 import com.pointwest.training.beans.UserBean;
 import com.pointwest.training.exception.DaoException;
 
@@ -49,6 +47,8 @@ public class MainHandlerUI {
 				
 				switch (choice) {
 				case "1": // Search
+					SearchUI searchUI = new SearchUI();
+					searchUI.searchUIHandler();
 					break;
 				case "2": // View Seatplan
 					break;

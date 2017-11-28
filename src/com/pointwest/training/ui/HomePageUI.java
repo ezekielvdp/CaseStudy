@@ -12,7 +12,7 @@ public class HomePageUI extends ParentUI {
 	
 	Scanner scan = new Scanner(System.in);
 	
-	List<String> validInputs = new ArrayList<>(Arrays.asList("1", "2", "3"));
+	public static final List<String> validInputs = new ArrayList<>(Arrays.asList("1", "2", "3"));
 	
 	public void displayHomePage(UserBean user) {
 		

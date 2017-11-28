@@ -1,6 +1,8 @@
 package com.pointwest.training.beans;
 
 public class SeatBean {
+	
+	// TODO: Edit SeatBean to have dynamic seats etc etc lol.
 	// Employee Seat Info
 	private String seatBldg;
 	private int seatFlrNum;
