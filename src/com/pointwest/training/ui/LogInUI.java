@@ -2,8 +2,6 @@ package com.pointwest.training.ui;
 
 import java.util.Scanner;
 
-import javax.naming.CommunicationException;
-
 import com.pointwest.training.beans.UserBean;
 import com.pointwest.training.constants.Constants;
 import com.pointwest.training.exception.DaoException;
@@ -13,7 +11,7 @@ public class LogInUI {
 	
 	private Scanner scan = new Scanner(System.in);
 	
-	public UserBean LogInMenu() throws DaoException {
+	public UserBean logIn() throws DaoException {
 		LogInService login = new LogInService();
 		
 		// LOG-IN UI
@@ -23,7 +21,7 @@ public class LogInUI {
 		String inUserName = inputUserName();
 		String inUserPass = inputUserPassword();
 		
-		UserBean user = login.isValidCredentials(inUserName, inUserPass);
+		UserBean user = login.retrieveUser(inUserName, inUserPass);
 		
 		return user;
 	}

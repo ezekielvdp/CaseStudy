@@ -1,3 +1,6 @@
 ERROR com.pointwest.training.dao.LogInDao 28 Nov 2017 06:56:39. - Something went wrong while trying log in.
 ERROR com.pointwest.training.dao.LogInDao 28 Nov 2017 06:57:06. - Something went wrong while trying log in.
 ERROR com.pointwest.training.dao.LogInDao 28 Nov 2017 06:57:32. - Something went wrong while trying log in.
+ERROR com.pointwest.training.dao.BaseDao 29 Nov 2017 05:33:28. - Error: Invalid SQL Query
+ERROR com.pointwest.training.dao.BaseDao 29 Nov 2017 05:38:29. - Error: Invalid SQL Query
+ERROR com.pointwest.training.dao.BaseDao 29 Nov 2017 05:41:11. - Error: Invalid SQL Query

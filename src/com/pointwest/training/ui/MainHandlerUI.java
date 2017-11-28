@@ -16,7 +16,7 @@ public class MainHandlerUI {
 		// Log-In Module
 		do {
 			try {
-				user = loginUI.LogInMenu();
+				user = loginUI.logIn();
 				isCorrectCredential = user != null;
 
 				if (!isCorrectCredential) {
@@ -43,12 +43,16 @@ public class MainHandlerUI {
 				homepageUI.displayHomePage(user);
 				
 				String choice = homepageUI.getChoice();
-				isValidInput = homepageUI.validInputs.contains(choice);
+				isValidInput = HomePageUI.validInputs.contains(choice);
 				
 				switch (choice) {
 				case "1": // Search
 					SearchUI searchUI = new SearchUI();
-					searchUI.searchUIHandler();
+					try {
+						searchUI.searchUIHandler();
+					} catch (DaoException e) {
+						System.out.println(e.getUserFriendlyErrorMessage());
+					}
 					break;
 				case "2": // View Seatplan
 					break;

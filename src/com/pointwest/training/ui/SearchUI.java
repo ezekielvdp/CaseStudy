@@ -2,10 +2,14 @@ package com.pointwest.training.ui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+import com.pointwest.training.beans.EmployeeBean;
+import com.pointwest.training.beans.SeatBean;
 import com.pointwest.training.constants.Constants;
+import com.pointwest.training.exception.DaoException;
 import com.pointwest.training.service.SearchService;
 
 public class SearchUI extends ParentUI{
@@ -13,20 +17,25 @@ public class SearchUI extends ParentUI{
 	Scanner scan = new Scanner(System.in);
 	public static final List<String> validInputs = new ArrayList<>(Arrays.asList("1", "2", "3"));
 	
-	public void searchUIHandler() {
+	public void searchUIHandler() throws DaoException {
 		displaySearchMenu();
 		boolean isValidInput = false;
 		
 		SearchService searchService = new SearchService();
 		
+		HashMap<Integer, EmployeeBean> searchResultByEmployeeId = new HashMap<Integer, EmployeeBean>();
+		
 		do {
 			String choice = this.getChoice();
-			isValidInput = this.validInputs.contains(choice);
+			isValidInput = SearchUI.validInputs.contains(choice);
 			
 			switch(choice) {
 			case "1": // Search By EmployeeID
 				String employeeId = searchByEmployeeIdUI();
-				searchService.searchEmployeeById(employeeId);
+				searchResultByEmployeeId = searchService.searchEmployeeById(employeeId);
+				if(!searchResultByEmployeeId.isEmpty()) {
+					displayResult(searchResultByEmployeeId);
+				}
 				break;
 			case "2": // Search By Name
 				break;
@@ -58,10 +67,55 @@ public class SearchUI extends ParentUI{
 
 		String employeeNum = scan.next();
 		try {
-		    int intValue = Integer.parseInt(employeeNum);
+		    Integer.parseInt(employeeNum);
 		} catch (NumberFormatException e) {
 		    System.out.println("Input is not a valid integer");
 		}
 		return employeeNum;
+	}
+	
+	public void displayResult(HashMap<Integer, EmployeeBean> searchResult) {
+		
+		int i = 1; // counter
+		
+		
+		String result = "";
+		
+		for(EmployeeBean employee : searchResult.values()) {
+			
+			for(SeatBean seat : employee.getListOfSeats()) {
+				
+				result += "[" + i + "] " + 
+						  employee.getEmployeeId() + Constants.DIV_VERTICAL + // 10231|
+						  employee.getEmployeeFirstName() + Constants.DIV_VERTICAL + // Juan|
+						  employee.getEmployeeLastName() + Constants.DIV_VERTICAL + // Santos|
+						  seat.getSeatBldgId() + seat.getSeatFlrNum() + seat.getSeatQuadrant() +  // PIC4A
+						  seat.getSeatColumnNum() + Constants.DASH + seat.getSeatRowNum() + Constants.DIV_VERTICAL;
+						  // 1-2
+				if(seat.getLocalNumber() == 0) {
+					result += "NONE|";
+				} else {
+					result += seat.getLocalNumber() + "|";
+				}
+				
+				int iter = 1;
+				for(String project : employee.getEmployeeProjects()) {
+					if(iter == employee.getEmployeeProjects().size()) {
+						result += project;
+					} else {
+						iter++;
+						result += project + ", ";
+					}
+				}
+				result+="\n";
+				i++;
+			}
+		}
+
+		System.out.println(Constants.DOUBLESHARP + " " + 
+				   Constants.SEARCH + " RESULT" + Constants.DASH + " "  + --i + " " + 
+				   Constants.DOUBLESHARP);
+		
+		System.out.println(result);
 	}
 }

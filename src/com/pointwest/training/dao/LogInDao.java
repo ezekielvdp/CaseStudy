@@ -2,8 +2,6 @@ package com.pointwest.training.dao;
 
 import java.sql.SQLException;
 
-import javax.naming.CommunicationException;
-
 import org.apache.log4j.Logger;
 
 import com.pointwest.training.beans.UserBean;
@@ -48,11 +46,11 @@ public class LogInDao extends BaseDao {
 				}
 			}			
 		} catch (SQLException se) {
-			String message = "Error: Invalid SQL Query";
+			String message = "Error: Something went wrong to the database.";
 			logger.error(message);
 			throw new DaoException(se, message);
 		} catch (Exception e) {
-			String message = "Something went wrong while trying log in.";
+			String message = "Error: Something went wrong while trying log in.";
 			logger.error(message);
 			throw new DaoException(e, message);
 		} finally {

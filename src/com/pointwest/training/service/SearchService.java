@@ -1,19 +1,19 @@
 package com.pointwest.training.service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 import com.pointwest.training.beans.EmployeeBean;
 import com.pointwest.training.dao.SearchDao;
+import com.pointwest.training.exception.DaoException;
 
 public class SearchService {
-	public List<EmployeeBean> searchEmployeeById(String empId) {
+	public HashMap<Integer, EmployeeBean> searchEmployeeById(String empId) throws DaoException {
 		
 		SearchDao searchDao = new SearchDao();
 		
-		List<EmployeeBean> searchResultByEmployeeId = new ArrayList<EmployeeBean>();
+		HashMap<Integer, EmployeeBean> searchResultByEmployeeId = new HashMap<Integer, EmployeeBean>();
 		
-		//searchResultByEmployeeId = searchDao;
+		searchResultByEmployeeId = searchDao.searchEmployeeById(empId);
 		
 		return searchResultByEmployeeId;
 	}
