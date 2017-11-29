@@ -15,65 +15,61 @@ public class SearchUI extends ParentUI{
 	
 	public static final List<String> validInputs = new ArrayList<>(Arrays.asList("1", "2", "3"));
 	
-	public String searchUIHandler() throws DaoException {
+	protected String searchUIHandler() throws DaoException {
 		
 		boolean isValidInput = false;
 		boolean isHome = false;
+		boolean isAgain = false;
 		String choice = "";
 		SearchService searchService = new SearchService();
-		
+				
 		HashMap<Integer, EmployeeBean> employeesById = new HashMap<Integer, EmployeeBean>();
 		
 		do {
-			displaySearchMenu();
-			choice = this.getChoice();
-			isValidInput = SearchUI.validInputs.contains(choice);
-			
 			String searchTxt = "";
 			
-			switch(choice) {
-			case "1": // Search By EmployeeID
-				searchTxt = searchByEmployeeIdUI();
-				employeesById = searchService.searchEmployeeById(searchTxt);
-				displayResult(employeesById);
-				// TODO: make this a function
-				do {
-					System.out.println(Constants.OPT_1 + "Search Again" + " " + Constants.OPT_2 + "Home");
-					choice = getChoice();
-					switch(choice) {
-					case "1":
-						choice = "AGAIN";
-						break;
-					case "2":
-						choice = "HOME";
-						break;
-					default:
-						System.out.println("Invalid input try again.");
-					}
-				} while("1".equals(choice) || "2".equals(choice));
-				
-				isHome = "HOME".equalsIgnoreCase(choice);
-				break;
-			case "2": // Search By Name
-				// TODO: finish this function
-				searchTxt = searchByNameUI();
-				
-				break;
-			case "3": // Search By Project
-				// TODO: finish this function
-				break;
-			default: // Error handling
-				System.out.println("Invalid input. Try Again!"); 
-				break;
+			// DISPLAY SEARCH MENU UI
+			displaySearchMenu();
+			choice = this.getChoice();
+			
+			// CHECK if valid input
+			isValidInput = SearchUI.validInputs.contains(choice);
+			
+			if(!isValidInput) {
+				searchTxt = searchEmployeeUI(choice);
+
+				switch(choice) {
+				case "1": // Search By EmployeeID
+					employeesById = searchService.searchEmployeeById(searchTxt);
+					break;
+				case "2": // Search By Name
+					employeesById = searchService.searchEmployeeByName(searchTxt);
+					break;
+				case "3": // Search By Project
+					employeesById = searchService.searchEmployeeByProject(searchTxt);
+					break;
+				default: // Error handling
+					System.out.println("Invalid input. Try Again!"); 
+					break;
+				}
 			}
 			
-		} while("AGAIN".equalsIgnoreCase(choice) || !isValidInput || !isHome);
+			if(!employeesById.isEmpty()) {
+				displayResult(employeesById);
+				choice = againMenu();
+			}
+			
+			isHome = "HOME".equalsIgnoreCase(choice);
+			isAgain = "AGAIN".equalsIgnoreCase(choice);
+			
+		} while(isAgain || !isHome || !isValidInput);
 		
 		return choice;
 	}
 	
+	
 	// DISPLAY SEARCH MENU
-	public void displaySearchMenu() {
+	protected void displaySearchMenu() {
 		System.out.println(Constants.DOUBLESHARP + " " + Constants.HEADER_SEARCH + " " + Constants.DOUBLESHARP);
 		System.out.println(Constants.HEADER_MENU);
 		System.out.println(Constants.OPT_1 + Constants.BY + Constants.EMPLOYEEID);
@@ -82,43 +78,60 @@ public class SearchUI extends ParentUI{
 	}
 	
 	// Search By Employee ID
-	public String searchByEmployeeIdUI() {
-		
-		System.out.println(Constants.DOUBLESHARP + " " 
-						 + Constants.HEADER_SEARCH + Constants.DASH + Constants.BY + Constants.EMPLOYEEID
-						 + " " + Constants.DOUBLESHARP);
-		
-		System.out.println("Enter " + Constants.EMPLOYEEID + ": ");
-
-		String employeeNum = scan.next();
-		try {
-		    Integer.parseInt(employeeNum);
-		} catch (NumberFormatException e) {
-		    System.out.println("Input is not a valid integer");
+	protected String searchEmployeeUI(String choice) {
+		String searchTxt = "";
+				
+		switch(choice) {
+		case "1":
+			System.out.println(Constants.DOUBLESHARP + " " 
+					 + Constants.HEADER_SEARCH + Constants.DASH + Constants.BY + Constants.EMPLOYEEID
+					 + " " + Constants.DOUBLESHARP);
+	
+			System.out.println("Enter " + Constants.EMPLOYEEID + ": ");			
+			break;
+		case "2":
+			System.out.println(Constants.DOUBLESHARP + " " 
+					 + Constants.HEADER_SEARCH + Constants.DASH + Constants.BY + Constants.NAME
+					 + " " + Constants.DOUBLESHARP);
+			System.out.println("Enter " + Constants.NAME + ": ");	
+			break;
+		case "3":
+			System.out.println(Constants.DOUBLESHARP + " " 
+					 + Constants.HEADER_SEARCH + Constants.DASH + Constants.BY + Constants.PROJECT
+					 + " " + Constants.DOUBLESHARP);
+			System.out.println("Enter " + Constants.PROJECT + ": ");	
+			break;
 		}
-		return employeeNum;
+		searchTxt = scan.next();
+		return searchTxt;
 	}
 	
-	public String searchByNameUI() {
+	protected String againMenu() {
+		String choice = "";
+		do {
+			System.out.println(Constants.OPT_1 + "Search Again" + " " + Constants.OPT_2 + "Home");
+			choice = getChoice();
+			switch(choice) {
+			case "1":
+				choice = "AGAIN";
+				break;
+			case "2":
+				choice = "HOME";
+				break;
+			default:
+				System.out.println("Invalid input try again.");
+			}
+		} while("1".equals(choice) || "2".equals(choice));
 		
-		System.out.println(Constants.DOUBLESHARP + " " 
-				 + Constants.HEADER_SEARCH + Constants.DASH + Constants.BY + Constants.NAME
-				 + " " + Constants.DOUBLESHARP);
-
-		System.out.println("Enter " + Constants.NAME + ": ");
-		
-		String employeeName = getChoice();
-				
-		return employeeName;
+		return choice;
 	}
 	
 	// DISPLAY RESULT LIST
-	public void displayResult(HashMap<Integer, EmployeeBean> searchResult) {
-
+	protected void displayResult(HashMap<Integer, EmployeeBean> searchResult) {
 		int i = 1; // counter
 		
 		String result = "";
-		
+
 		for(EmployeeBean employee : searchResult.values()) {
 			for(SeatBean seat : employee.getListOfSeats()) {
 				result += "[" + i + "] " + 
@@ -144,6 +157,7 @@ public class SearchUI extends ParentUI{
 				i++;
 			}
 		}
+		
 		result = "".equals(result) ? "NO DATA FOUND" : result;
 		System.out.println(Constants.DOUBLESHARP + " " + Constants.SEARCH + " RESULT" + Constants.DASH + --i + " " + Constants.DOUBLESHARP);
 		System.out.println(Constants.DIV_HORIZONTAL);
@@ -152,5 +166,4 @@ public class SearchUI extends ParentUI{
 		System.out.println(result);
 		System.out.println(Constants.DIV_HORIZONTAL2 + "end of result" + Constants.DIV_HORIZONTAL2);
 	}
-
 }

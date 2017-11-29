@@ -47,7 +47,6 @@ public class EmployeeBean {
 	}
 	
 	// Seats
-	
 	public List<SeatBean> getListOfSeats() {
 		return employeeSeats;
 	}
@@ -71,5 +70,4 @@ public class EmployeeBean {
 	public void addToSeatList(SeatBean toAdd) {
 		this.employeeSeats.add(toAdd);
 	}
-	
 }

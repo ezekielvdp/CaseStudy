@@ -8,7 +8,7 @@ public class ParentUI {
 	
 	Scanner scan = new Scanner(System.in);
 	
-	public String getChoice() {
+	protected String getChoice() {
 		
 		String choice = "";
 		
