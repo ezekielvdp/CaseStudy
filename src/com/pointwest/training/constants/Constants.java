@@ -1,7 +1,8 @@
 package com.pointwest.training.constants;
 
 public class Constants {
-	public static final String DIV_HORIZONTAL = "-----------------------------------------------";
+	public static final String DIV_HORIZONTAL = "-------------------------------------------------------------------------------------------";
+	public static final String DIV_HORIZONTAL2 = "---------------------------------------";
 	public static final String DIV_VERTICAL = "|";
 	public static final String DOUBLESHARP = "##";
 	public static final String DASH = "-";
