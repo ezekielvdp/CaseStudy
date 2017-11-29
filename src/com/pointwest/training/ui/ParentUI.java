@@ -14,7 +14,7 @@ public class ParentUI {
 		
 		// Choice
 		System.out.println(Constants.CHOOSE);
-		choice = scan.next();
+		choice = scan.nextLine();
 		
 		return choice;
 	}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import com.pointwest.training.beans.EmployeeBean;
 import com.pointwest.training.beans.SeatBean;
@@ -17,15 +18,17 @@ public class SearchUI extends ParentUI{
 	
 	protected String searchUIHandler() throws DaoException {
 		
-		boolean isValidInput = false;
+		boolean isValidChoice = false;
+		boolean isValidSearchTxt = false;
 		boolean isHome = false;
 		boolean isAgain = false;
 		String choice = "";
 		SearchService searchService = new SearchService();
-				
-		HashMap<Integer, EmployeeBean> employeesById = new HashMap<Integer, EmployeeBean>();
 		
+		// Gateway between home and search UI
 		do {
+			HashMap<Integer, EmployeeBean> employeesById = new HashMap<Integer, EmployeeBean>();
+			
 			String searchTxt = "";
 			
 			// DISPLAY SEARCH MENU UI
@@ -33,28 +36,43 @@ public class SearchUI extends ParentUI{
 			choice = this.getChoice();
 			
 			// CHECK if valid input
-			isValidInput = SearchUI.validInputs.contains(choice);
+			isValidChoice = SearchUI.validInputs.contains(choice);
 			
-			if(!isValidInput) {
+			if(isValidChoice) {
+				// Search Employee UI Level
+				do {
 				searchTxt = searchEmployeeUI(choice);
 
 				switch(choice) {
-				case "1": // Search By EmployeeID
-					employeesById = searchService.searchEmployeeById(searchTxt);
-					break;
-				case "2": // Search By Name
-					employeesById = searchService.searchEmployeeByName(searchTxt);
-					break;
-				case "3": // Search By Project
-					employeesById = searchService.searchEmployeeByProject(searchTxt);
-					break;
-				default: // Error handling
-					System.out.println("Invalid input. Try Again!"); 
-					break;
-				}
+					case "1": // Search By EmployeeID
+						// Does not accept non-integer but accepts blank as search all
+						isValidSearchTxt = Pattern.compile("\\d+").matcher(searchTxt).matches() || searchTxt.isEmpty();
+						if(isValidSearchTxt) {
+							employeesById = searchService.searchEmployeeById(searchTxt);
+						} else {
+							System.out.println("Invalid input! Please try inputting numeric values or empty to search all employees.");
+						}
+						break;
+					case "2": // Search By Name
+						isValidSearchTxt = Pattern.compile("\\D+").matcher(searchTxt.trim()).matches() || searchTxt.isEmpty();
+						if(isValidSearchTxt) {
+							employeesById = searchService.searchEmployeeByName(searchTxt);
+						} else {
+							System.out.println("Invalid input! Please try inputting text or empty to search all employees. [Note: Space is invalid input too]");
+						}
+						break;
+					case "3": // Search By Project
+						isValidSearchTxt = true;
+						employeesById = searchService.searchEmployeeByProject(searchTxt);
+						break;
+					default: // Error handling
+						System.out.println("Invalid input. Try Again!"); 
+						break;
+					}
+				} while(!isValidSearchTxt);
 			}
 			
-			if(!employeesById.isEmpty()) {
+			if(!employeesById.isEmpty() || isValidSearchTxt) {
 				displayResult(employeesById);
 				choice = againMenu();
 			}
@@ -62,7 +80,7 @@ public class SearchUI extends ParentUI{
 			isHome = "HOME".equalsIgnoreCase(choice);
 			isAgain = "AGAIN".equalsIgnoreCase(choice);
 			
-		} while(isAgain || !isHome || !isValidInput);
+		} while(isAgain || !isHome && !isValidChoice);
 		
 		return choice;
 	}
@@ -102,7 +120,7 @@ public class SearchUI extends ParentUI{
 			System.out.println("Enter " + Constants.PROJECT + ": ");	
 			break;
 		}
-		searchTxt = scan.next();
+		searchTxt = scan.nextLine();
 		return searchTxt;
 	}
 	

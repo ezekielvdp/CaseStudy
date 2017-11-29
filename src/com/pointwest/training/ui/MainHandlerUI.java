@@ -58,6 +58,8 @@ public class MainHandlerUI {
 						}
 						break;
 					case "2": // View Seatplan
+						ViewSeatplan viewUI = new ViewSeatplan();
+						
 						break;
 					case "3": // Logout
 						choice = "LOGOUT";

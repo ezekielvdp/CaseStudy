@@ -36,5 +36,4 @@ public class SearchService {
 
 		return searchResult;
 	}
-	
 }
