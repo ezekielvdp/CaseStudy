@@ -11,7 +11,7 @@ public class LogInUI {
 	
 	private Scanner scan = new Scanner(System.in);
 	
-	public UserBean logIn() throws DaoException {
+	protected UserBean logIn() throws DaoException {
 		LogInService login = new LogInService();
 		
 		// LOG-IN UI
@@ -26,16 +26,16 @@ public class LogInUI {
 		return user;
 	}
 	
-	public void displayInvalidLogIn() {
+	protected void displayInvalidLogIn() {
 		System.out.println("The username/password you've inputted is invalid. Please Try Again.");
 	}
 	
-	public String inputUserName() {
+	protected String inputUserName() {
 		System.out.println(Constants.UNAME);
 		return scan.next();
 	}
 	
-	public String inputUserPassword() {
+	protected String inputUserPassword() {
 		System.out.println(Constants.UPASS);
 		return scan.next();
 	}

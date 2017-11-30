@@ -23,7 +23,6 @@ public class SearchUI extends ParentUI{
 		boolean isHome = false;
 		boolean isAgain = false;
 		String choice = "";
-		SearchService searchService = new SearchService();
 		
 		// Gateway between home and search UI
 		do {
@@ -42,7 +41,8 @@ public class SearchUI extends ParentUI{
 				// Search Employee UI Level
 				do {
 				searchTxt = searchEmployeeUI(choice);
-
+				SearchService searchService = new SearchService();
+				
 				switch(choice) {
 					case "1": // Search By EmployeeID
 						// Does not accept non-integer but accepts blank as search all
@@ -54,7 +54,7 @@ public class SearchUI extends ParentUI{
 						}
 						break;
 					case "2": // Search By Name
-						isValidSearchTxt = Pattern.compile("\\D+").matcher(searchTxt.trim()).matches() || searchTxt.isEmpty();
+						isValidSearchTxt = Pattern.compile("^[ A-Za-z0-9_@./#&+-]*$").matcher(searchTxt.trim()).matches() || searchTxt.isEmpty();
 						if(isValidSearchTxt) {
 							employeesById = searchService.searchEmployeeByName(searchTxt);
 						} else {
@@ -87,7 +87,7 @@ public class SearchUI extends ParentUI{
 	
 	
 	// DISPLAY SEARCH MENU
-	protected void displaySearchMenu() {
+	private void displaySearchMenu() {
 		System.out.println(Constants.DOUBLESHARP + " " + Constants.HEADER_SEARCH + " " + Constants.DOUBLESHARP);
 		System.out.println(Constants.HEADER_MENU);
 		System.out.println(Constants.OPT_1 + Constants.BY + Constants.EMPLOYEEID);
@@ -96,7 +96,7 @@ public class SearchUI extends ParentUI{
 	}
 	
 	// Search By Employee ID
-	protected String searchEmployeeUI(String choice) {
+	private String searchEmployeeUI(String choice) {
 		String searchTxt = "";
 				
 		switch(choice) {
@@ -124,7 +124,7 @@ public class SearchUI extends ParentUI{
 		return searchTxt;
 	}
 	
-	protected String againMenu() {
+	private String againMenu() {
 		String choice = "";
 		do {
 			System.out.println(Constants.OPT_1 + "Search Again" + " " + Constants.OPT_2 + "Home");
@@ -145,7 +145,7 @@ public class SearchUI extends ParentUI{
 	}
 	
 	// DISPLAY RESULT LIST
-	protected void displayResult(HashMap<Integer, EmployeeBean> searchResult) {
+	private void displayResult(HashMap<Integer, EmployeeBean> searchResult) {
 		int i = 1; // counter
 		
 		String result = "";

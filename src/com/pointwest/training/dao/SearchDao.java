@@ -34,7 +34,7 @@ public class SearchDao extends BaseDao {
 					+ "INNER JOIN plsdb.employee_seat AS emp_seat ON emp.emp_id = emp_seat.emp_id "
 					+ "INNER JOIN plsdb.seat AS seat ON emp_seat.seat_id = seat.seat_id " 
 					+ "WHERE emp.emp_id LIKE ? AND NOT proj_alias = 'BogusProject'"
-					+ "ORDER BY emp.emp_id";
+					+ "ORDER BY emp_id DESC";
 
 			ps = conn.prepareStatement(query);
 			ps.setString(1, '%' + searchTxt + '%');
