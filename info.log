@@ -180,3 +180,4 @@
  INFO com.pointwest.training.dao.BaseDao 29 Nov 2017 13:41:06. - Connected to Database: com.mysql.jdbc.JDBC4Connection@6d9c638
  INFO com.pointwest.training.dao.BaseDao 29 Nov 2017 13:41:09. - Connected to Database: com.mysql.jdbc.JDBC4Connection@76ccd017
  INFO com.pointwest.training.dao.BaseDao 29 Nov 2017 13:41:13. - Connected to Database: com.mysql.jdbc.JDBC4Connection@762efe5d
+ INFO com.pointwest.training.dao.BaseDao 01 Dec 2017 22:44:22. - Connected to Database: com.mysql.jdbc.JDBC4Connection@7fbe847c
