@@ -374,3 +374,6 @@
  INFO com.pointwest.training.dao.BaseDao 01 Dec 2017 05:49:16. - Connected to Database: com.mysql.jdbc.JDBC4Connection@53bd815b
  INFO com.pointwest.training.dao.BaseDao 01 Dec 2017 05:49:37. - Connected to Database: com.mysql.jdbc.JDBC4Connection@7fbe847c
  INFO com.pointwest.training.dao.BaseDao 01 Dec 2017 05:49:40. - Connected to Database: com.mysql.jdbc.JDBC4Connection@123a439b
+ INFO com.pointwest.training.dao.BaseDao 01 Dec 2017 05:50:41. - Connected to Database: com.mysql.jdbc.JDBC4Connection@7fbe847c
+ INFO com.pointwest.training.dao.BaseDao 01 Dec 2017 05:50:44. - Connected to Database: com.mysql.jdbc.JDBC4Connection@123a439b
+ INFO com.pointwest.training.dao.BaseDao 01 Dec 2017 05:50:52. - Connected to Database: com.mysql.jdbc.JDBC4Connection@53bd815b
