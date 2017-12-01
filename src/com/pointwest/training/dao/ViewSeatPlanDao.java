@@ -1,53 +1,87 @@
 package com.pointwest.training.dao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.pointwest.training.beans.EmployeeBean;
 import com.pointwest.training.beans.SeatBean;
 import com.pointwest.training.exception.DaoException;
 
 public class ViewSeatPlanDao extends BaseDao {
-	public HashMap<String, EmployeeBean> searchEmployeeById(String searchTxt) throws DaoException {
-
-		HashMap<String, EmployeeBean> seatsByQuadrant = new HashMap<String, EmployeeBean>();
+	
+	
+	public HashMap<String, List<EmployeeBean>> viewSeatPlanByLocation(String location, String flrLevel) throws DaoException {
+		HashMap<String, List<EmployeeBean>> seatsByQuadrant = new HashMap<String, List<EmployeeBean>>();
 				
 		try {
 			conn = establishConnection();
 
-			String query = "SELECT emp.emp_id, "
-					+ "seat.seat_id, "
-					+ "emp.role, "
-					+ "first_name, "
-					+ "last_name, "
-					+ "seat.bldg_id, "
-					+ "seat.floor_number, "
-					+ "seat.quadrant, "
-					+ "seat.column_number, "
-					+ "seat.row_number, "
-					+ "seat.local_number, "
-					+ "emp.shift, "
-					+ "emp_proj.proj_alias "
-					+ "FROM plsdb.employee AS emp "
-					+ "INNER JOIN plsdb.employee_project AS emp_proj ON emp.emp_id = emp_proj.employee_id "
-					+ "INNER JOIN plsdb.employee_seat AS emp_seat ON emp.emp_id = emp_seat.emp_id "
-					+ "INNER JOIN plsdb.seat AS seat ON emp_seat.seat_id = seat.seat_id " 
-					+ "WHERE emp.emp_id LIKE ? AND NOT proj_alias = 'BogusProject'"
-					+ "ORDER BY emp.emp_id";
+			String query = "SELECT seat.seat_id, "
+						   + "loc.bldg_address, "
+						   + "emp_seat.emp_id, "
+						   + "emp.first_name, "
+						   + "emp.last_name, "
+						   + "seat.bldg_id, "
+						   + "seat.floor_number, "
+						   + "seat.quadrant, "
+						   + "seat.column_number, "
+						   + "seat.row_number, "
+						   + "seat.local_number "
+						   + "FROM plsdb.seat AS seat "
+						   + "LEFT JOIN plsdb.employee_seat AS emp_seat ON seat.seat_id = emp_seat.seat_id "
+						   + "LEFT JOIN location AS loc ON seat.bldg_id = loc.bldg_id "
+						   + "LEFT JOIN employee AS emp ON emp.emp_id = emp_seat.emp_id "
+						   + "WHERE seat.bldg_id = ? AND seat.floor_number = ? "
+						   + "ORDER by seat_id, bldg_id, quadrant, row_number";
 
 			ps = conn.prepareStatement(query);
-			ps.setString(1, '%' + searchTxt + '%');
+			ps.setString(1, location);
+			ps.setString(2, flrLevel);
 			rs = ps.executeQuery();
 
 			if (rs.next()) {
 				// Reset rs cursor to start
 				rs.beforeFirst();
 				
+				// Reinstantiate all needed data
 				EmployeeBean employee = null;
+				List<EmployeeBean> listOfSeatOnQuadrant = null;
 				
 				// Get user data
 				while (rs.next()) {
-									
+					String quadrant = rs.getString("quadrant");
+					
+					employee = new EmployeeBean();
+					
+					// if key already exist
+					if(seatsByQuadrant.containsKey(quadrant)) {
+						listOfSeatOnQuadrant = seatsByQuadrant.get(quadrant);
+						
+						employee = setEmployeeData();
+						
+						SeatBean seat = new SeatBean();
+						seat = setSeatData();
+						
+						employee.addToSeatList(seat);
+						
+						listOfSeatOnQuadrant.add(employee);
+						seatsByQuadrant.put(quadrant, listOfSeatOnQuadrant);
+						
+					} else {									
+						listOfSeatOnQuadrant = new ArrayList<EmployeeBean>();
+						
+						employee = setEmployeeData();
+						
+						SeatBean seat = new SeatBean();
+						seat = setSeatData();
+						
+						employee.addToSeatList(seat);
+						
+						listOfSeatOnQuadrant.add(employee);
+						seatsByQuadrant.put(quadrant, listOfSeatOnQuadrant);
+					}
 				}
 			}
 		} catch (SQLException se) {
@@ -56,7 +90,7 @@ public class ViewSeatPlanDao extends BaseDao {
 			logger.error(message);
 			throw new DaoException(se, message);
 		} catch (Exception e) {
-			String message = "Something went wrong while trying log in.";
+			String message = "Something went wrong.";
 			logger.error(message);
 			throw new DaoException(e, message);
 		} finally {
@@ -64,6 +98,16 @@ public class ViewSeatPlanDao extends BaseDao {
 			closeResource();
 		}
 
-		return employeesByEmpId;
+		return seatsByQuadrant;
+	}
+
+	@Override
+	protected EmployeeBean setEmployeeData() throws SQLException {
+		EmployeeBean employee = new EmployeeBean();
+		
+		employee.setEmployeeFirstName(rs.getString("first_name"));
+		employee.setEmployeeLastName(rs.getString("last_name"));
+		
+		return employee;
 	}
 }

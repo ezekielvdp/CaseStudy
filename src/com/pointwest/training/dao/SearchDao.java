@@ -67,14 +67,8 @@ public class SearchDao extends BaseDao {
 						// Instantiate SeatBean
 						SeatBean seat = new SeatBean();
 						
-						// Set seat values
-						seat.setSeatId(rs.getInt("seat_id"));
-						seat.setSeatBldgId(rs.getString("bldg_id"));
-						seat.setSeatFlrNum(rs.getInt("floor_number"));
-						seat.setSeatQuadrant(rs.getString("quadrant"));
-						seat.setSeatColumnNum(rs.getInt("column_number"));
-						seat.setSeatRowNum(rs.getInt("row_number"));
-						seat.setLocalNumber(rs.getInt("local_number"));
+						// set seat info values
+						seat = setSeatData();
 						
 						// Add seat to the employee seat list, if not the same
 						if(employee.getListOfSeats().contains(seat)) {
@@ -92,21 +86,10 @@ public class SearchDao extends BaseDao {
 						SeatBean seat = new SeatBean();
 						
 						// Set employee infos values
-						employee.setEmployeeId(rs.getInt("emp_id"));
-						employee.setEmployeeRole(rs.getString("role"));
-						employee.setEmployeeFirstName(rs.getString("first_name"));
-						employee.setEmployeeLastName(rs.getString("last_name"));
-						employee.setEmployeeShift(rs.getString("shift"));
-						employee.addToProjectList(rs.getString("proj_alias"));
-						
-						// Set seat values
-						seat.setSeatId(rs.getInt("seat_id"));
-						seat.setSeatBldgId(rs.getString("bldg_id"));
-						seat.setSeatFlrNum(rs.getInt("floor_number"));
-						seat.setSeatQuadrant(rs.getString("quadrant"));
-						seat.setSeatColumnNum(rs.getInt("column_number"));
-						seat.setSeatRowNum(rs.getInt("row_number"));
-						seat.setLocalNumber(rs.getInt("local_number"));
+						employee = setEmployeeData();
+			
+						// set seat info values
+						seat = setSeatData();
 						
 						// Add seat to the employee seat list
 						employee.addToSeatList(seat);
@@ -191,14 +174,8 @@ public class SearchDao extends BaseDao {
 						// Instantiate SeatBean
 						SeatBean seat = new SeatBean();
 						
-						// Set seat values
-						seat.setSeatId(rs.getInt("seat_id"));
-						seat.setSeatBldgId(rs.getString("bldg_id"));
-						seat.setSeatFlrNum(rs.getInt("floor_number"));
-						seat.setSeatQuadrant(rs.getString("quadrant"));
-						seat.setSeatColumnNum(rs.getInt("column_number"));
-						seat.setSeatRowNum(rs.getInt("row_number"));
-						seat.setLocalNumber(rs.getInt("local_number"));
+						// set seat data info
+						seat = setSeatData();
 						
 						// Add seat to the employee seat list, if not the same
 						if(employee.getListOfSeats().contains(seat)) {
@@ -224,13 +201,7 @@ public class SearchDao extends BaseDao {
 						employee.addToProjectList(rs.getString("proj_alias"));
 						
 						// Set seat values
-						seat.setSeatId(rs.getInt("seat_id"));
-						seat.setSeatBldgId(rs.getString("bldg_id"));
-						seat.setSeatFlrNum(rs.getInt("floor_number"));
-						seat.setSeatQuadrant(rs.getString("quadrant"));
-						seat.setSeatColumnNum(rs.getInt("column_number"));
-						seat.setSeatRowNum(rs.getInt("row_number"));
-						seat.setLocalNumber(rs.getInt("local_number"));
+						seat = setSeatData();
 						
 						// Add seat to the employee seat list
 						employee.addToSeatList(seat);
@@ -377,5 +348,21 @@ public class SearchDao extends BaseDao {
 		}
 
 		return employeesByEmpId;
+	}
+
+	
+	@Override
+	protected EmployeeBean setEmployeeData() throws SQLException {
+		
+		EmployeeBean employee = new EmployeeBean();
+		
+		employee.setEmployeeId(rs.getInt("emp_id"));
+		employee.setEmployeeRole(rs.getString("role"));
+		employee.setEmployeeFirstName(rs.getString("first_name"));
+		employee.setEmployeeLastName(rs.getString("last_name"));
+		employee.setEmployeeShift(rs.getString("shift"));
+		employee.addToProjectList(rs.getString("proj_alias"));
+		
+		return employee;
 	}
 }

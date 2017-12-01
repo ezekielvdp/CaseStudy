@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
 
+import com.pointwest.training.beans.EmployeeBean;
 import com.pointwest.training.beans.UserBean;
 import com.pointwest.training.exception.DaoException;
 
@@ -17,13 +18,22 @@ public class LogInDao extends BaseDao {
 		try {
 			conn = establishConnection();
 			
-			String query = "SELECT "
-							+ "employee.first_name, "
-							+ "employee.last_name, "
-							+ "employee.role from employee "
-							+ "WHERE "
-							+ "username = ? AND "
-							+ "password = ?";
+			String query = "SELECT emp.emp_id, "
+						   + "emp.role, first_name, "
+						   + "last_name, emp.shift, "
+						   + "emp_proj.proj_alias, "
+						   + "seat.seat_id, "
+						   + "seat.bldg_id, "
+						   + "seat.floor_number, "
+						   + "seat.quadrant, "
+						   + "seat.column_number, "
+						   + "seat.row_number, "
+						   + "seat.local_number "
+						   + "FROM plsdb.employee "
+						   + "AS emp INNER JOIN plsdb.employee_project AS emp_proj ON emp.emp_id = emp_proj.employee_id "
+						   + "INNER JOIN plsdb.employee_seat AS emp_seat ON emp.emp_id = emp_seat.emp_id "
+						   + "INNER JOIN plsdb.seat AS seat ON emp_seat.seat_id = seat.seat_id "
+						   + "WHERE username = ? AND password = ?";
 			
 			ps = conn.prepareStatement(query);
 			ps.setString(1, userName);
@@ -59,5 +69,11 @@ public class LogInDao extends BaseDao {
 		}
 		
 		return user;
+	}
+
+	@Override
+	protected EmployeeBean setEmployeeData() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

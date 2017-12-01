@@ -58,8 +58,12 @@ public class MainHandlerUI {
 						}
 						break;
 					case "2": // View Seatplan
-						ViewSeatplanUI viewUI = new ViewSeatplanUI();
-						
+						ViewSeatplanUI viewUI = new ViewSeatplanUI();						
+						try {
+							choice = viewUI.viewHandler();
+						} catch (DaoException e) {
+							System.out.println(e.getUserFriendlyErrorMessage());
+						}
 						break;
 					case "3": // Logout
 						choice = "LOGOUT";

@@ -8,9 +8,11 @@ import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
 
+import com.pointwest.training.beans.EmployeeBean;
+import com.pointwest.training.beans.SeatBean;
 import com.pointwest.training.exception.DaoException;
 
-public class BaseDao {
+public abstract class BaseDao {
 
 	Logger logger = Logger.getLogger(BaseDao.class);
 
@@ -18,7 +20,7 @@ public class BaseDao {
 	protected PreparedStatement ps = null;
 	protected ResultSet rs = null;	
 	
-	public Connection establishConnection() throws DaoException {
+	protected Connection establishConnection() throws DaoException {
 
 		// Inputs for database
 		String host = "jdbc:mysql://localhost:3306/PLSDB";
@@ -41,7 +43,7 @@ public class BaseDao {
 		return conn;
 	}
 
-	public void closeResource() {
+	protected void closeResource() {
 		try {
 			if (conn != null) {
 				conn.close();
@@ -59,4 +61,20 @@ public class BaseDao {
 
 		}
 	}
+	
+	protected SeatBean setSeatData() throws SQLException {
+		SeatBean seat = new SeatBean();
+		
+		seat.setSeatId(rs.getInt("seat_id"));
+		seat.setSeatBldgId(rs.getString("bldg_id"));
+		seat.setSeatFlrNum(rs.getInt("floor_number"));
+		seat.setSeatQuadrant(rs.getString("quadrant"));
+		seat.setSeatColumnNum(rs.getInt("column_number"));
+		seat.setSeatRowNum(rs.getInt("row_number"));
+		seat.setLocalNumber(rs.getInt("local_number"));
+		
+		return seat;
+	}
+	
+	protected abstract EmployeeBean setEmployeeData() throws SQLException;
 }
