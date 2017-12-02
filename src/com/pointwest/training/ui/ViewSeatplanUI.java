@@ -7,10 +7,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import com.pointwest.training.beans.EmployeeBean;
-import com.pointwest.training.beans.SeatBean;
 import com.pointwest.training.constants.Constants;
 import com.pointwest.training.exception.DaoException;
-import com.pointwest.training.service.SearchService;
 import com.pointwest.training.service.ViewSeatPlanService;
 
 public class ViewSeatplanUI extends ParentUI{
@@ -50,7 +48,7 @@ public class ViewSeatplanUI extends ParentUI{
 				switch(choice) {
 					case "1": // View By Location
 						System.out.println(Constants.ENTERLOCATION);
-						location = scan.nextLine();
+						location = scan.nextLine().toUpperCase();
 						System.out.println(Constants.ENTERFLOORLVL);
 						flrLevel = scan.nextLine();
 						
@@ -59,10 +57,12 @@ public class ViewSeatplanUI extends ParentUI{
 								isValidInputs = true;
 								listOfSeatsByQuadrants = seatplanService.viewSeatplanByLocation(location, flrLevel);
 							}
+						} else {
+							System.out.println("Only valid inputs are PTC, PIC, PLC");
 						}
 						
 						if(!isValidInputs) {
-							System.out.println("Invalid inputs. Try again!@@");
+							System.out.println("Invalid input floor input. Try again!");
 						} else {
 							displaySeatPlan(listOfSeatsByQuadrants);
 						}
@@ -76,7 +76,22 @@ public class ViewSeatplanUI extends ParentUI{
 						System.out.println(Constants.ENTERQUADRANT);
 						quadrant = scan.nextLine();
 						
-						listOfSeatsByQuadrants = seatplanService.viewSeatplanByQuadrant(location, flrLevel, quadrant);
+						if(!location.isEmpty() && validLocation.contains(location)) {
+							if(!flrLevel.isEmpty() && Pattern.compile("\\d+").matcher(flrLevel).matches()) {
+								isValidInputs = true;
+								listOfSeatsByQuadrants = seatplanService.viewSeatplanByQuadrant(location, flrLevel, quadrant);
+							}
+						} else {
+							System.out.println("Only valid inputs are PTC, PIC, PLC");
+						}
+						
+						if(!isValidInputs) {
+							System.out.println("Invalid input floor input. Try again!");
+						} else {
+							displaySeatPlan(listOfSeatsByQuadrants);
+						}
+						
+						
 						break;
 					default: // Error handling
 						System.out.println("Invalid input. Try Again!"); 
@@ -104,48 +119,103 @@ public class ViewSeatplanUI extends ParentUI{
 	private void displaySeatPlan(HashMap<String, List<EmployeeBean>> listOfSeatsByQuadrants) {
 		
 		
-		int ctr = 0;
-		
-		HashMap<Integer, List<String>> resultMap = new HashMap<Integer, List<String>>();
+		boolean doOnce = false;
 		
 		for(List<EmployeeBean> listOfEmployeeSeats : listOfSeatsByQuadrants.values()) {
-			ctr++;
-			List<String> resultList = new ArrayList<String>();
+			int ctr = 0;
 			
-			for(int i = 0; i < listOfEmployeeSeats.size(); i++) {
-				
-				if(i+5 % 5 == 0) {
-					System.out.println();
-				}
-			}
+			List<String> seatDetailsPlaceHolder = new ArrayList<String>();
+			List<String> namePlaceHolder = new ArrayList<String>();
+			List<String> localNumberPlaceHolder = new ArrayList<String>();
+
+			String quadrant = "";
 			
 			for(EmployeeBean employee : listOfEmployeeSeats) {
 				
-				// Get Employee Info if available
-				String employeeNameHolder = "";
-				if(employee.getEmployeeFirstName() != null && !employee.getEmployeeFirstName().isEmpty()) {
-					employeeNameHolder += employee.getEmployeeFirstName();
+				
+				if(!doOnce) {
+					doOnce = true;
+					
+					String bldg_id = employee.getListOfSeats().get(0).getSeatBldgId();
+					String bldg_address = employee.getListOfSeats().get(0).getSeatBldgAddress();
+					int flrLevel = employee.getListOfSeats().get(0).getSeatFlrNum();
+					System.out.println("\n\n" + Constants.DOUBLESHARP + " " + Constants.VIEWSEATPLAN + " " + Constants.DOUBLESHARP);
+					System.out.println(Constants.DIV_HORIZONTAL);
+					System.out.println("LOCATION: " + bldg_id + " (" + bldg_address + "), FLOOR: " + flrLevel + "\n\n");
 				}
 				
-				if(employee.getEmployeeLastName() != null && !employee.getEmployeeLastName().isEmpty()) {
-					employeeNameHolder += ", " + employee.getEmployeeLastName();
-				}
+				ctr++;
 				
-				// Iterate per seats in employee even if employee is null.
-				for(SeatBean seat : employee.getListOfSeats()) {
-					String result = "";
-					String seatLocation = seat.getSeatBldgId() + seat.getSeatFlrNum() + seat.getSeatQuadrant() + 
-										  seat.getSeatColumnNum() + Constants.DASH + seat.getSeatRowNum();
-					result += seatLocation;
-					if(!employeeNameHolder.isEmpty()) {
-						result+= "\n" + employeeNameHolder;
+				String currQuadrant = employee.getListOfSeats().get(0).getSeatQuadrant();
+				
+				if(!quadrant.equalsIgnoreCase(currQuadrant)) {
+					quadrant = employee.getListOfSeats().get(0).getSeatQuadrant();
+					System.out.println("[QUADRANT " + quadrant + "] " +Constants.DIV_HORIZONTAL + "\n\n");
+					
+				}
+
+				String seat = employee.getListOfSeats().get(0).getSeatBldgId() 
+							+ employee.getListOfSeats().get(0).getSeatFlrNum() + "F"
+							+ employee.getListOfSeats().get(0).getSeatQuadrant()
+							+ employee.getListOfSeats().get(0).getSeatColumnNum()
+							+ Constants.DASH
+							+ employee.getListOfSeats().get(0).getSeatRowNum();
+				
+				seatDetailsPlaceHolder.add(seat);
+				
+				String fName = employee.getEmployeeFirstName() != null ? employee.getEmployeeFirstName() : "UNOCCUPIED";
+				String lName = "";
+				
+				if(employee.getEmployeeLastName() != null) {
+					if(!fName.isEmpty()) {
+						lName = ", " + employee.getEmployeeLastName();
+					} else {
+						lName = employee.getEmployeeLastName();
 					}
-					result += seat.getLocalNumber() == 0 ? "" : "\nloc." +  seat.getLocalNumber();
-					resultList.add(result);
+				} else {
+					lName = "";
 				}
 				
+				String fullName = fName + lName;
+				
+				namePlaceHolder.add(fullName);
+				
+				String localNumber = employee.getListOfSeats().get(0).getLocalNumber() == 0 ? "" : Integer.toString(employee.getListOfSeats().get(0).getLocalNumber());
+				
+				localNumberPlaceHolder.add(localNumber);
+				
+				if(ctr % 3 == 0) {
+					
+					String format = "%1$35s";
+					
+					for(String seatDetail : seatDetailsPlaceHolder) {
+//						System.out.format(format, seatDetail);
+						System.out.printf(format, seatDetail);
+					}
+					
+					System.out.println();
+					
+					for(String name : namePlaceHolder) {
+						System.out.printf(format, name);
+					}
+					
+					System.out.println();
+					
+					for(String localnum : localNumberPlaceHolder) {
+						if(localnum.isEmpty()) {
+							System.out.printf(format, "LOC# N/A");
+						} else {
+							System.out.printf(format, "loc." + localnum, format);
+						}
+					}
+					
+					System.out.println("\n\n");
+					
+					seatDetailsPlaceHolder.clear();
+					namePlaceHolder.clear();
+					localNumberPlaceHolder.clear();
+				}
 			}
-			resultMap.put(ctr, resultList);
 		}
 	}
 }

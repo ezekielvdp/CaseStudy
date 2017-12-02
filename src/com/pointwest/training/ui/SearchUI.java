@@ -40,6 +40,7 @@ public class SearchUI extends ParentUI{
 			if(isValidChoice) {
 				// Search Employee UI Level
 				do {
+					
 				searchTxt = searchEmployeeUI(choice);
 				SearchService searchService = new SearchService();
 				
@@ -54,11 +55,11 @@ public class SearchUI extends ParentUI{
 						}
 						break;
 					case "2": // Search By Name
-						isValidSearchTxt = Pattern.compile("^[ A-Za-z0-9_@./#&+-]*$").matcher(searchTxt.trim()).matches() || searchTxt.isEmpty();
+						isValidSearchTxt = Pattern.compile("^[A-Za-z]*$").matcher(searchTxt.trim()).matches() || searchTxt.isEmpty();
 						if(isValidSearchTxt) {
 							employeesById = searchService.searchEmployeeByName(searchTxt);
 						} else {
-							System.out.println("Invalid input! Please try inputting text or empty to search all employees. [Note: Space is invalid input too]");
+							System.out.println("Invalid input! Please try inputting text or empty/a whitespace to search all employees.");
 						}
 						break;
 					case "3": // Search By Project
@@ -152,11 +153,12 @@ public class SearchUI extends ParentUI{
 
 		for(EmployeeBean employee : searchResult.values()) {
 			for(SeatBean seat : employee.getListOfSeats()) {
+			
 				result += "[" + i + "] " + 
 						  employee.getEmployeeId() + Constants.DIV_VERTICAL + 
 						  employee.getEmployeeFirstName() + Constants.DIV_VERTICAL + 
 						  employee.getEmployeeLastName() + Constants.DIV_VERTICAL + 
-						  seat.getSeatBldgId() + seat.getSeatFlrNum() + seat.getSeatQuadrant() + 
+						  seat.getSeatBldgId() + seat.getSeatFlrNum() + "F" + seat.getSeatQuadrant() + 
 						  seat.getSeatColumnNum() + Constants.DASH + seat.getSeatRowNum() + Constants.DIV_VERTICAL;
 				
 				// set none to no local number if 0 else display local number

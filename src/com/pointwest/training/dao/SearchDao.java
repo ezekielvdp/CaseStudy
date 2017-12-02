@@ -21,6 +21,7 @@ public class SearchDao extends BaseDao {
 					+ "emp.role, "
 					+ "first_name, "
 					+ "last_name, "
+					+ "loc.bldg_address, "
 					+ "seat.bldg_id, "
 					+ "seat.floor_number, "
 					+ "seat.quadrant, "
@@ -33,6 +34,7 @@ public class SearchDao extends BaseDao {
 					+ "INNER JOIN plsdb.employee_project AS emp_proj ON emp.emp_id = emp_proj.employee_id "
 					+ "INNER JOIN plsdb.employee_seat AS emp_seat ON emp.emp_id = emp_seat.emp_id "
 					+ "INNER JOIN plsdb.seat AS seat ON emp_seat.seat_id = seat.seat_id " 
+					+ "INNER JOIN plsdb.location AS loc ON seat.bldg_id = loc.bldg_id "
 					+ "WHERE emp.emp_id LIKE ? AND NOT proj_alias = 'BogusProject'"
 					+ "ORDER BY emp_id DESC";
 
@@ -127,6 +129,7 @@ public class SearchDao extends BaseDao {
 					+ "emp.role, "
 					+ "first_name, "
 					+ "last_name, "
+					+ "loc.bldg_address, "
 					+ "seat.bldg_id, "
 					+ "seat.floor_number, "
 					+ "seat.quadrant, "
@@ -139,6 +142,7 @@ public class SearchDao extends BaseDao {
 					+ "INNER JOIN plsdb.employee_project AS emp_proj ON emp.emp_id = emp_proj.employee_id "
 					+ "INNER JOIN plsdb.employee_seat AS emp_seat ON emp.emp_id = emp_seat.emp_id "
 					+ "INNER JOIN plsdb.seat AS seat ON emp_seat.seat_id = seat.seat_id " 
+					+ "INNER JOIN plsdb.location AS loc ON seat.bldg_id = loc.bldg_id "
 					+ "WHERE (emp.first_name LIKE ? OR emp.last_name LIKE ?) AND (NOT proj_alias = 'BogusProject') "
 					+ "ORDER BY emp.emp_id";
 
@@ -239,6 +243,7 @@ public class SearchDao extends BaseDao {
 					+ "emp.role, "
 					+ "first_name, "
 					+ "last_name, "
+					+ "loc.bldg_address, "
 					+ "seat.bldg_id, "
 					+ "seat.floor_number, "
 					+ "seat.quadrant, "
@@ -251,7 +256,8 @@ public class SearchDao extends BaseDao {
 					+ "INNER JOIN plsdb.employee_project AS emp_proj ON emp.emp_id = emp_proj.employee_id "
 					+ "INNER JOIN plsdb.employee_seat AS emp_seat ON emp.emp_id = emp_seat.emp_id "
 					+ "INNER JOIN plsdb.seat AS seat ON emp_seat.seat_id = seat.seat_id " 
-					+ "WHERE emp_proj.proj_alias LIKE ?"
+					+ "INNER JOIN plsdb.location AS loc ON seat.bldg_id = loc.bldg_id "
+					+ "WHERE emp_proj.proj_alias LIKE ? "
 					+ "ORDER BY emp.emp_id";
 
 			ps = conn.prepareStatement(query);

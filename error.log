@@ -6,3 +6,5 @@ ERROR com.pointwest.training.dao.BaseDao 29 Nov 2017 05:38:29. - Error: Invalid 
 ERROR com.pointwest.training.dao.BaseDao 29 Nov 2017 05:41:11. - Error: Invalid SQL Query
 ERROR com.pointwest.training.dao.BaseDao 01 Dec 2017 23:25:40. - Error: Invalid SQL Query
 ERROR com.pointwest.training.dao.BaseDao 01 Dec 2017 23:26:14. - Something went wrong while trying log in.
+ERROR com.pointwest.training.dao.BaseDao 02 Dec 2017 13:27:59. - Error: Invalid SQL Query
+ERROR com.pointwest.training.dao.BaseDao 02 Dec 2017 13:28:58. - Error: Invalid SQL Query

@@ -26,7 +26,9 @@ public class ViewSeatPlanService {
 		ViewSeatPlanDao viewSeatplanByQuadrant = new ViewSeatPlanDao();
 		
 		HashMap<String, List<EmployeeBean>> seatsByQuadrant = new HashMap<String, List<EmployeeBean>>();
-
-		return null;
+		
+		seatsByQuadrant = viewSeatplanByQuadrant.viewSeatPlanByQuadrant(location, flrLevel, quadrant);
+		
+		return seatsByQuadrant;
 	}
 }

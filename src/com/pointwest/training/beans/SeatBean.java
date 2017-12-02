@@ -10,7 +10,8 @@ public class SeatBean {
 	private int seatRowNum;
 	private int seatColumnNum;
 	private int localNumber;
-
+	private String seatBldgAddress;
+	
 	public int getSeatId() {
 		return seatId;
 	}
@@ -52,5 +53,11 @@ public class SeatBean {
 	}
 	public void setLocalNumber(int localNumber) {
 		this.localNumber = localNumber;
+	}
+	public String getSeatBldgAddress() {
+		return seatBldgAddress;
+	}
+	public void setSeatBldgAddress(String seatBldgAddress) {
+		this.seatBldgAddress = seatBldgAddress;
 	}
 }

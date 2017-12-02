@@ -72,7 +72,7 @@ public abstract class BaseDao {
 		seat.setSeatColumnNum(rs.getInt("column_number"));
 		seat.setSeatRowNum(rs.getInt("row_number"));
 		seat.setLocalNumber(rs.getInt("local_number"));
-		
+		seat.setSeatBldgAddress(rs.getString("bldg_address"));
 		return seat;
 	}
 	
