@@ -8,7 +8,7 @@ import java.util.Scanner;
 import com.pointwest.training.beans.UserBean;
 import com.pointwest.training.constants.Constants;
 
-public class HomePageUI extends ParentUI {
+public class HomePageUI extends MenuUI {
 	
 	Scanner scan = new Scanner(System.in);
 	
@@ -31,7 +31,6 @@ public class HomePageUI extends ParentUI {
 		System.out.println(Constants.OPT_1 + Constants.SEARCH);
 		System.out.println(Constants.OPT_2 + Constants.VIEWSEATPLAN);
 		System.out.println(Constants.OPT_3 + Constants.LOGOUT);
-
 	}
 	
 }

@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import com.pointwest.training.constants.Constants;
 
-public class ParentUI {
+public class MenuUI {
 	
 	Scanner scan = new Scanner(System.in);
 	

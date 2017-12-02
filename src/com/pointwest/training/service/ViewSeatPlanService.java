@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.pointwest.training.beans.EmployeeBean;
-import com.pointwest.training.dao.SearchDao;
 import com.pointwest.training.dao.ViewSeatPlanDao;
 import com.pointwest.training.exception.DaoException;
 

@@ -1,5 +1,6 @@
 package com.pointwest.training.exception;
 
+@SuppressWarnings("serial")
 public class DaoException extends Exception {
 	
 	private final String userFriendlyErrorMessage;

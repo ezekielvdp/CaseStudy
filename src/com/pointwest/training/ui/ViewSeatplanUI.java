@@ -11,15 +11,14 @@ import com.pointwest.training.constants.Constants;
 import com.pointwest.training.exception.DaoException;
 import com.pointwest.training.service.ViewSeatPlanService;
 
-public class ViewSeatplanUI extends ParentUI{
+public class ViewSeatplanUI extends MenuUI{
 	
 	public static final List<String> validInputs = new ArrayList<>(Arrays.asList("1", "2"));
 	
-	public static final List<String> validLocation = new ArrayList<>(Arrays.asList("PTC", "PIC", "PLC"));
-	
+	// Handler for View functionality
 	public String viewHandler() throws DaoException {
 		boolean isValidChoice = false;
-		boolean isValidInputs = false;
+		
 		boolean isHome = false;
 		boolean isAgain = false;
 		String choice = "";
@@ -34,72 +33,37 @@ public class ViewSeatplanUI extends ParentUI{
 			
 			// CHECK if valid input
 			isValidChoice = SearchUI.validInputs.contains(choice);
+						
+			String location = "";
+			String flrLevel = "";
+			String quadrant = "";
 			
-			if(isValidChoice) {
-				// Search Employee UI Level
-				do {
-					
-					String location = "";
-					String flrLevel = "";
-					String quadrant = "";
-					
-					ViewSeatPlanService seatplanService = new ViewSeatPlanService();
-					
-				switch(choice) {
-					case "1": // View By Location
-						System.out.println(Constants.ENTERLOCATION);
-						location = scan.nextLine().toUpperCase();
-						System.out.println(Constants.ENTERFLOORLVL);
-						flrLevel = scan.nextLine();
-						
-						if(!location.isEmpty() && validLocation.contains(location)) {
-							if(!flrLevel.isEmpty() && Pattern.compile("\\d+").matcher(flrLevel).matches()) {
-								isValidInputs = true;
-								listOfSeatsByQuadrants = seatplanService.viewSeatplanByLocation(location, flrLevel);
-							}
-						} else {
-							System.out.println("Only valid inputs are PTC, PIC, PLC");
-						}
-						
-						if(!isValidInputs) {
-							System.out.println("Invalid input floor input. Try again!");
-						} else {
-							displaySeatPlan(listOfSeatsByQuadrants);
-						}
-						
-						break;
-					case "2": // View By Quadrant
-						System.out.println(Constants.ENTERLOCATION);
-						location = scan.nextLine();
-						System.out.println(Constants.ENTERFLOORLVL);
-						flrLevel = scan.nextLine();
-						System.out.println(Constants.ENTERQUADRANT);
-						quadrant = scan.nextLine();
-						
-						if(!location.isEmpty() && validLocation.contains(location)) {
-							if(!flrLevel.isEmpty() && Pattern.compile("\\d+").matcher(flrLevel).matches()) {
-								isValidInputs = true;
-								listOfSeatsByQuadrants = seatplanService.viewSeatplanByQuadrant(location, flrLevel, quadrant);
-							}
-						} else {
-							System.out.println("Only valid inputs are PTC, PIC, PLC");
-						}
-						
-						if(!isValidInputs) {
-							System.out.println("Invalid input floor input. Try again!");
-						} else {
-							displaySeatPlan(listOfSeatsByQuadrants);
-						}
-						
-						
-						break;
-					default: // Error handling
-						System.out.println("Invalid input. Try Again!"); 
-						break;
-					}
-				} while(!isValidInputs);
+			ViewSeatPlanService seatplanService = new ViewSeatPlanService();
+			
+			switch(choice) {
+			case "1": // View By Location
+				location = inputLocation();
+				flrLevel = inputFlrLevel();
+				
+				listOfSeatsByQuadrants = seatplanService.viewSeatplanByLocation(location, flrLevel);
+				displaySeatPlan(listOfSeatsByQuadrants);
+				break;
+			case "2": // View By Quadrant
+				location = inputLocation();
+				flrLevel = inputFlrLevel();
+				quadrant = inputQuadrant();
+				
+				listOfSeatsByQuadrants = seatplanService.viewSeatplanByQuadrant(location, flrLevel, quadrant);
+				displaySeatPlan(listOfSeatsByQuadrants);
+				break;
+			default: // Error handling
+				System.out.println("Invalid input. Try Again!"); 
+				break;
 			}
 			
+			if(isValidChoice) {
+				choice = againMenu();
+			}
 			
 			isHome = "HOME".equalsIgnoreCase(choice);
 			isAgain = "AGAIN".equalsIgnoreCase(choice);
@@ -109,6 +73,7 @@ public class ViewSeatplanUI extends ParentUI{
 		return choice;
 	}
 	
+	// Display menu of view seatplan
 	private void displayViewSeatPlanMenu() {
 		System.out.println(Constants.DOUBLESHARP + " " + Constants.VIEWSEATPLAN + " " + Constants.DOUBLESHARP);
 		System.out.println(Constants.HEADER_MENU);
@@ -116,10 +81,100 @@ public class ViewSeatplanUI extends ParentUI{
 		System.out.println(Constants.OPT_2 + Constants.BY + Constants.QUADRANT);
 	}
 
+	// Again Menu
+	protected String againMenu() {
+		String choice = "";
+		do {
+			System.out.println(Constants.OPT_1 + "View Seatplan Again" + " " + Constants.OPT_2 + "Home");
+			choice = getChoice();
+			switch(choice) {
+			case "1":
+				choice = "AGAIN";
+				break;
+			case "2":
+				choice = "HOME";
+				break;
+			default:
+				System.out.println("Invalid input try again.");
+			}
+		} while("1".equals(choice) || "2".equals(choice));
+		
+		return choice;
+	}
+	
+	// Get Input Location from user
+	private String inputLocation() {
+		
+		final List<String> validLocation = new ArrayList<>(Arrays.asList("PTC", "PIC", "PLC"));
+		
+		String location = "";
+		
+		boolean isValidInputs = false;
+		
+		do {
+			System.out.println(Constants.ENTERLOCATION);
+			location = scan.nextLine().toUpperCase();
+			
+			isValidInputs = validLocation.contains(location) && !location.isEmpty();
+			
+			if(!isValidInputs) {
+				System.out.println("Only valid inputs are PTC, PIC, PLC, Try Again!");
+			}
+		} while(!isValidInputs);
+		
+		return location;
+		
+	}
+	
+	// Get Input floorLevel from user
+	private String inputFlrLevel() {
+		String flrLevel = "";
+		boolean isValidInputs = false;
+		
+		do {
+			System.out.println(Constants.ENTERFLOORLVL);
+			flrLevel = scan.nextLine();
+			
+			isValidInputs = Pattern.compile("\\d+").matcher(flrLevel).matches() && !flrLevel.isEmpty();
+			
+			if(!isValidInputs) {
+				System.out.println("Invalid input! only numeric value is a valid input.");
+			}
+		} while(!isValidInputs);
+		
+		return flrLevel;
+	}
+	
+	// Get Input quadrant from user
+	private String inputQuadrant() {
+		String quadrant = "";
+		
+		boolean isValidInputs = false;
+		
+		do {
+			System.out.println(Constants.ENTERQUADRANT);
+			quadrant = scan.nextLine();
+			
+			isValidInputs = Pattern.compile("^[A-Za-z]$").matcher(quadrant).matches() && !quadrant.isEmpty();
+			
+			if(!isValidInputs) {
+				System.out.println("Invalid input! Only 1 alphabetic character is required.");
+			}
+		} while(!isValidInputs);
+		
+		return quadrant;
+	}
+	
+	// Display SeatPlan
 	private void displaySeatPlan(HashMap<String, List<EmployeeBean>> listOfSeatsByQuadrants) {
 		
-		
 		boolean doOnce = false;
+		
+		if(listOfSeatsByQuadrants.isEmpty()) {
+			System.out.println("\n\n" + Constants.DOUBLESHARP + " " + Constants.VIEWSEATPLAN + " " + Constants.DOUBLESHARP);
+			System.out.println(Constants.DIV_HORIZONTAL);
+			System.out.println("NO RESULTS FOUND");
+		}
 		
 		for(List<EmployeeBean> listOfEmployeeSeats : listOfSeatsByQuadrants.values()) {
 			int ctr = 0;
@@ -130,16 +185,14 @@ public class ViewSeatplanUI extends ParentUI{
 
 			String quadrant = "";
 			
+			int iter = 1;
 			for(EmployeeBean employee : listOfEmployeeSeats) {
-				
 				
 				if(!doOnce) {
 					doOnce = true;
-					
 					String bldg_id = employee.getListOfSeats().get(0).getSeatBldgId();
 					String bldg_address = employee.getListOfSeats().get(0).getSeatBldgAddress();
 					int flrLevel = employee.getListOfSeats().get(0).getSeatFlrNum();
-					System.out.println("\n\n" + Constants.DOUBLESHARP + " " + Constants.VIEWSEATPLAN + " " + Constants.DOUBLESHARP);
 					System.out.println(Constants.DIV_HORIZONTAL);
 					System.out.println("LOCATION: " + bldg_id + " (" + bldg_address + "), FLOOR: " + flrLevel + "\n\n");
 				}
@@ -154,6 +207,7 @@ public class ViewSeatplanUI extends ParentUI{
 					
 				}
 
+				// STORING DATA IN LIST
 				String seat = employee.getListOfSeats().get(0).getSeatBldgId() 
 							+ employee.getListOfSeats().get(0).getSeatFlrNum() + "F"
 							+ employee.getListOfSeats().get(0).getSeatQuadrant()
@@ -184,12 +238,12 @@ public class ViewSeatplanUI extends ParentUI{
 				
 				localNumberPlaceHolder.add(localNumber);
 				
-				if(ctr % 3 == 0) {
+				// PRINT DATA FROM LIST AND CLEAR, RINSE, REPEAT
+				if(ctr % 3 == 0 || iter == listOfEmployeeSeats.size()) {
 					
 					String format = "%1$35s";
 					
 					for(String seatDetail : seatDetailsPlaceHolder) {
-//						System.out.format(format, seatDetail);
 						System.out.printf(format, seatDetail);
 					}
 					
@@ -217,5 +271,6 @@ public class ViewSeatplanUI extends ParentUI{
 				}
 			}
 		}
+		System.out.println(Constants.DIV_HORIZONTAL2 + "end of result" + Constants.DIV_HORIZONTAL2);
 	}
 }

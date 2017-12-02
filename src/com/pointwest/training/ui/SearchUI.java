@@ -12,10 +12,11 @@ import com.pointwest.training.constants.Constants;
 import com.pointwest.training.exception.DaoException;
 import com.pointwest.training.service.SearchService;
 
-public class SearchUI extends ParentUI{
+public class SearchUI extends MenuUI {
 	
 	public static final List<String> validInputs = new ArrayList<>(Arrays.asList("1", "2", "3"));
 	
+	// Handler for search functionality
 	protected String searchUIHandler() throws DaoException {
 		
 		boolean isValidChoice = false;
@@ -85,8 +86,7 @@ public class SearchUI extends ParentUI{
 		
 		return choice;
 	}
-	
-	
+
 	// DISPLAY SEARCH MENU
 	private void displaySearchMenu() {
 		System.out.println(Constants.DOUBLESHARP + " " + Constants.HEADER_SEARCH + " " + Constants.DOUBLESHARP);
@@ -125,7 +125,8 @@ public class SearchUI extends ParentUI{
 		return searchTxt;
 	}
 	
-	private String againMenu() {
+	// Again Menu
+	protected String againMenu() {
 		String choice = "";
 		do {
 			System.out.println(Constants.OPT_1 + "Search Again" + " " + Constants.OPT_2 + "Home");
