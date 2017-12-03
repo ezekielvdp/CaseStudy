@@ -86,12 +86,12 @@ public class ViewSeatPlanDao extends BaseDao {
 			}
 		} catch (SQLException se) {
 			System.out.println(se.getMessage());
-			String message = "Error: Invalid SQL Query";
-			logger.error(message);
+			String message = "Error: There might be a problem in the way we have inputted the data.";
+			logger.error(message + ", ExceptionMessage: " + se.getMessage());
 			throw new DaoException(se, message);
 		} catch (Exception e) {
-			String message = "Something went wrong.";
-			logger.error(message);
+			String message = "Error: Something went wrong with database connection.";
+			logger.error(message + ", ExceptionMessage: " + e.getMessage());
 			throw new DaoException(e, message);
 		} finally {
 			// Close conn, ps, rs
@@ -176,12 +176,12 @@ public class ViewSeatPlanDao extends BaseDao {
 			}
 		} catch (SQLException se) {
 			System.out.println(se.getMessage());
-			String message = "Error: Invalid SQL Query";
-			logger.error(message);
+			String message = "Error: There might be a problem in the way we have inputted the data.";
+			logger.error(message + ", ExceptionMessage: " + se.getMessage());
 			throw new DaoException(se, message);
 		} catch (Exception e) {
-			String message = "Something went wrong.";
-			logger.error(message);
+			String message = "Error: Something went wrong with database connection.";
+			logger.error(message + ", ExceptionMessage: " + e.getMessage());
 			throw new DaoException(e, message);
 		} finally {
 			// Close conn, ps, rs

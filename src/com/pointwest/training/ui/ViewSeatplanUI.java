@@ -13,13 +13,13 @@ import com.pointwest.training.service.ViewSeatPlanService;
 
 public class ViewSeatplanUI extends MenuUI{
 	
-	public static final List<String> validInputs = new ArrayList<>(Arrays.asList("1", "2"));
+	public static final List<String> validInputs = new ArrayList<>(Arrays.asList("1", "2", "3"));
 	
 	// Handler for View functionality
 	public String viewHandler() throws DaoException {
 		boolean isValidChoice = false;
 		
-		boolean isHome = false;
+		boolean isReturnToHome = false;
 		boolean isAgain = false;
 		String choice = "";
 		
@@ -56,19 +56,22 @@ public class ViewSeatplanUI extends MenuUI{
 				listOfSeatsByQuadrants = seatplanService.viewSeatplanByQuadrant(location, flrLevel, quadrant);
 				displaySeatPlan(listOfSeatsByQuadrants);
 				break;
+			case "3":
+				choice = "BACK";
+				break;
 			default: // Error handling
 				System.out.println("Invalid input. Try Again!"); 
 				break;
 			}
 			
-			if(isValidChoice) {
+			if(isValidChoice && !"BACK".equalsIgnoreCase(choice)) {
 				choice = againMenu();
 			}
 			
-			isHome = "HOME".equalsIgnoreCase(choice);
+			isReturnToHome = "HOME".equalsIgnoreCase(choice) || "BACK".equalsIgnoreCase(choice);
 			isAgain = "AGAIN".equalsIgnoreCase(choice);
 			
-		} while(isAgain || !isHome && !isValidChoice);
+		} while(isAgain || !isReturnToHome && !isValidChoice);
 		
 		return choice;
 	}
@@ -79,6 +82,7 @@ public class ViewSeatplanUI extends MenuUI{
 		System.out.println(Constants.HEADER_MENU);
 		System.out.println(Constants.OPT_1 + Constants.BY + Constants.LOCATION);
 		System.out.println(Constants.OPT_2 + Constants.BY + Constants.QUADRANT);
+		System.out.println(Constants.OPT_3 + Constants.BACK);
 	}
 
 	// Again Menu

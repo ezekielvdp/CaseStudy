@@ -14,14 +14,14 @@ import com.pointwest.training.service.SearchService;
 
 public class SearchUI extends MenuUI {
 	
-	public static final List<String> validInputs = new ArrayList<>(Arrays.asList("1", "2", "3"));
+	public static final List<String> validInputs = new ArrayList<>(Arrays.asList("1", "2", "3", "4"));
 	
 	// Handler for search functionality
 	protected String searchUIHandler() throws DaoException {
 		
 		boolean isValidChoice = false;
 		boolean isValidSearchTxt = false;
-		boolean isHome = false;
+		boolean isReturnToHome = false;
 		boolean isAgain = false;
 		String choice = "";
 		
@@ -40,13 +40,12 @@ public class SearchUI extends MenuUI {
 			
 			if(isValidChoice) {
 				// Search Employee UI Level
-				do {
-					
-				searchTxt = searchEmployeeUI(choice);
-				SearchService searchService = new SearchService();
-				
+				do {	
+					SearchService searchService = null;
 				switch(choice) {
 					case "1": // Search By EmployeeID
+						searchTxt = searchEmployeeUI(choice);
+						searchService = new SearchService();
 						// Does not accept non-integer but accepts blank as search all
 						isValidSearchTxt = Pattern.compile("\\d+").matcher(searchTxt).matches() || searchTxt.isEmpty();
 						if(isValidSearchTxt) {
@@ -56,6 +55,8 @@ public class SearchUI extends MenuUI {
 						}
 						break;
 					case "2": // Search By Name
+						searchTxt = searchEmployeeUI(choice);
+						searchService = new SearchService();
 						isValidSearchTxt = Pattern.compile("^[A-Za-z]*$").matcher(searchTxt.trim()).matches() || searchTxt.isEmpty();
 						if(isValidSearchTxt) {
 							employeesById = searchService.searchEmployeeByName(searchTxt);
@@ -64,14 +65,20 @@ public class SearchUI extends MenuUI {
 						}
 						break;
 					case "3": // Search By Project
+						searchTxt = searchEmployeeUI(choice);
+						searchService = new SearchService();
 						isValidSearchTxt = true;
 						employeesById = searchService.searchEmployeeByProject(searchTxt);
+						break;
+					case "4": // Back
+						isValidSearchTxt = false;
+						choice = "BACK";
 						break;
 					default: // Error handling
 						System.out.println("Invalid input. Try Again!"); 
 						break;
 					}
-				} while(!isValidSearchTxt);
+				} while(!isValidSearchTxt && !"BACK".equalsIgnoreCase(choice));
 			}
 			
 			if(!employeesById.isEmpty() || isValidSearchTxt) {
@@ -79,10 +86,10 @@ public class SearchUI extends MenuUI {
 				choice = againMenu();
 			}
 			
-			isHome = "HOME".equalsIgnoreCase(choice);
+			isReturnToHome = "HOME".equalsIgnoreCase(choice) || "BACK".equalsIgnoreCase(choice);
 			isAgain = "AGAIN".equalsIgnoreCase(choice);
 			
-		} while(isAgain || !isHome && !isValidChoice);
+		} while(isAgain || !isReturnToHome && !isValidChoice);
 		
 		return choice;
 	}
@@ -94,6 +101,7 @@ public class SearchUI extends MenuUI {
 		System.out.println(Constants.OPT_1 + Constants.BY + Constants.EMPLOYEEID);
 		System.out.println(Constants.OPT_2 + Constants.BY + Constants.NAME);
 		System.out.println(Constants.OPT_3 + Constants.BY + Constants.PROJECT);
+		System.out.println(Constants.OPT_4 + Constants.BACK);
 	}
 	
 	// Search By Employee ID

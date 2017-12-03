@@ -10,11 +10,15 @@ public class Constants {
 	public static final String OPT_1 = "[1] ";
 	public static final String OPT_2 = "[2] ";
 	public static final String OPT_3 = "[3] ";
+	public static final String OPT_4 = "[4] ";
 	
 	public static final String HEADER_MENU = "MENU:";
 	public static final String BY = "By ";
 	
 	public static final String CHOOSE = "Please Choose: ";
+	
+	public static final String EXIT = "Exit";
+	public static final String BACK = "Go Back";
 	
 	// Log In
 	public static final String HEADER_LOGIN = "LOGIN";

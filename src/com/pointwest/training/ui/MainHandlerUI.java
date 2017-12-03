@@ -12,6 +12,7 @@ public class MainHandlerUI {
 
 		boolean isCorrectCredential = false;
 		boolean isExceptionOccured = false;
+		boolean isHome = false;
 		
 		String choice = "";
 		
@@ -68,11 +69,19 @@ public class MainHandlerUI {
 					case "3": // Logout
 						choice = "LOGOUT";
 						break;
+					case "4":
+						choice = "EXIT";
+						break;
 					default: // Error handling
 						System.out.println("Invalid input. Try Again!"); 
 					}
-				} while(!isValidInput || "HOME".equalsIgnoreCase(choice));
+					
+					isHome = "HOME".equalsIgnoreCase(choice) || "BACK".equalsIgnoreCase(choice);
+					
+				} while(!isValidInput || isHome);
 			}
-		} while("LOGOUT".equalsIgnoreCase(choice));
+		} while(!"EXIT".equalsIgnoreCase(choice));
+		
+		System.out.println("Program Ended.");
 	}
 }

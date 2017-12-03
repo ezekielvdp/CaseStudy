@@ -12,7 +12,7 @@ public class HomePageUI extends MenuUI {
 	
 	Scanner scan = new Scanner(System.in);
 	
-	public static final List<String> validInputs = new ArrayList<>(Arrays.asList("1", "2", "3"));
+	public static final List<String> validInputs = new ArrayList<>(Arrays.asList("1", "2", "3", "4"));
 	
 	public void displayHomePage(UserBean user) {
 		
@@ -31,6 +31,7 @@ public class HomePageUI extends MenuUI {
 		System.out.println(Constants.OPT_1 + Constants.SEARCH);
 		System.out.println(Constants.OPT_2 + Constants.VIEWSEATPLAN);
 		System.out.println(Constants.OPT_3 + Constants.LOGOUT);
+		System.out.println(Constants.OPT_4 + Constants.EXIT);
 	}
 	
 }
