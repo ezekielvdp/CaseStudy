@@ -535,3 +535,21 @@
  INFO com.pointwest.training.dao.BaseDao 04 Dec 2017 01:36:04. - Connected to Database: com.mysql.jdbc.JDBC4Connection@6d9c638
  INFO com.pointwest.training.dao.BaseDao 04 Dec 2017 01:36:07. - Connected to Database: com.mysql.jdbc.JDBC4Connection@76ccd017
  INFO com.pointwest.training.dao.BaseDao 04 Dec 2017 01:36:19. - Connected to Database: com.mysql.jdbc.JDBC4Connection@762efe5d
+ INFO com.pointwest.training.dao.BaseDao 04 Dec 2017 01:42:47. - Connected to Database: com.mysql.jdbc.JDBC4Connection@6d9c638
+ INFO com.pointwest.training.dao.BaseDao 04 Dec 2017 01:42:52. - Connected to Database: com.mysql.jdbc.JDBC4Connection@76ccd017
+ INFO com.pointwest.training.dao.BaseDao 04 Dec 2017 01:53:14. - Connected to Database: com.mysql.jdbc.JDBC4Connection@6d9c638
+ INFO com.pointwest.training.dao.BaseDao 04 Dec 2017 01:56:50. - Connected to Database: com.mysql.jdbc.JDBC4Connection@76ccd017
+ INFO com.pointwest.training.dao.BaseDao 04 Dec 2017 01:56:55. - Connected to Database: com.mysql.jdbc.JDBC4Connection@762efe5d
+ INFO com.pointwest.training.dao.BaseDao 04 Dec 2017 09:59:49. - Connected to Database: com.mysql.jdbc.JDBC4Connection@6d9c638
+ INFO com.pointwest.training.dao.BaseDao 04 Dec 2017 10:00:33. - Connected to Database: com.mysql.jdbc.JDBC4Connection@133e16fd
+ INFO com.pointwest.training.dao.BaseDao 04 Dec 2017 10:01:46. - Connected to Database: com.mysql.jdbc.JDBC4Connection@6cc7b4de
+ INFO com.pointwest.training.dao.BaseDao 04 Dec 2017 10:03:20. - Connected to Database: com.mysql.jdbc.JDBC4Connection@133e16fd
+ INFO com.pointwest.training.dao.BaseDao 04 Dec 2017 10:07:10. - Connected to Database: com.mysql.jdbc.JDBC4Connection@6d9c638
+ INFO com.pointwest.training.dao.BaseDao 04 Dec 2017 10:07:29. - Connected to Database: com.mysql.jdbc.JDBC4Connection@76ccd017
+ INFO com.pointwest.training.dao.BaseDao 04 Dec 2017 10:07:41. - Connected to Database: com.mysql.jdbc.JDBC4Connection@762efe5d
+ INFO com.pointwest.training.dao.BaseDao 04 Dec 2017 10:08:17. - Connected to Database: com.mysql.jdbc.JDBC4Connection@7d6f77cc
+ INFO com.pointwest.training.dao.BaseDao 04 Dec 2017 10:08:29. - Connected to Database: com.mysql.jdbc.JDBC4Connection@3fb4f649
+ INFO com.pointwest.training.dao.BaseDao 04 Dec 2017 10:08:40. - Connected to Database: com.mysql.jdbc.JDBC4Connection@4d591d15
+ INFO com.pointwest.training.dao.BaseDao 04 Dec 2017 10:08:45. - Connected to Database: com.mysql.jdbc.JDBC4Connection@5c8da962
+ INFO com.pointwest.training.dao.BaseDao 04 Dec 2017 10:09:03. - Connected to Database: com.mysql.jdbc.JDBC4Connection@ed17bee
+ INFO com.pointwest.training.dao.BaseDao 04 Dec 2017 10:09:20. - Connected to Database: com.mysql.jdbc.JDBC4Connection@12bb4df8

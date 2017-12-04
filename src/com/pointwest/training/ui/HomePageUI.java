@@ -16,8 +16,8 @@ public class HomePageUI extends MenuUI {
 	
 	public void displayHomePage(UserBean user) {
 		
-		String firstName = user.getUserFirstName();
-		String lastName = user.getUserLastName();
+		String firstName = user.getEmployeeFirstName();
+		String lastName = user.getEmployeeLastName();
 		String role = user.getUserRole();
 		
 		// Header & Welcome Message

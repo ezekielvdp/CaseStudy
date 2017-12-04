@@ -30,7 +30,6 @@ public class MainHandlerUI {
 				} catch (DaoException de) {
 					isExceptionOccured = true;
 					System.out.println(de.getUserFriendlyErrorMessage());
-					System.out.println("Terminating program.");
 				}
 	
 			} while (!isExceptionOccured && !isCorrectCredential);

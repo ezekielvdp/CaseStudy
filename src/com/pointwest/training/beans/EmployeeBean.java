@@ -7,7 +7,6 @@ public class EmployeeBean {
 	
 	// Employee Info
 	private int employeeId;
-	private String employeeRole;
 	private String employeeFirstName;
 	private String employeeLastName;
 	private String employeeShift;
@@ -20,12 +19,6 @@ public class EmployeeBean {
 	}
 	public void setEmployeeId(int employeeId) {
 		this.employeeId = employeeId;
-	}
-	public String getEmployeeRole() {
-		return employeeRole;
-	}
-	public void setEmployeeRole(String employeeRole) {
-		this.employeeRole = employeeRole;
 	}
 	public String getEmployeeFirstName() {
 		return employeeFirstName;

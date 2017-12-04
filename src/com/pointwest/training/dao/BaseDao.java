@@ -56,7 +56,7 @@ public abstract class BaseDao {
 			}
 
 		} catch (SQLException se) {
-			logger.error("Failed to close connection objects");
+			logger.error("Failed to close connection objects" + ", " + se.getMessage());
 		} catch (Exception e) {
 
 		}

@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import org.apache.log4j.Logger;
 
 import com.pointwest.training.beans.EmployeeBean;
+import com.pointwest.training.beans.SeatBean;
 import com.pointwest.training.beans.UserBean;
 import com.pointwest.training.exception.DaoException;
 
@@ -19,10 +20,12 @@ public class LogInDao extends BaseDao {
 			conn = establishConnection();
 			
 			String query = "SELECT emp.emp_id, "
+						   + "username, "
 						   + "emp.role, first_name, "
 						   + "last_name, emp.shift, "
 						   + "emp_proj.proj_alias, "
 						   + "seat.seat_id, "
+						   + "loc.bldg_address, "
 						   + "seat.bldg_id, "
 						   + "seat.floor_number, "
 						   + "seat.quadrant, "
@@ -33,6 +36,7 @@ public class LogInDao extends BaseDao {
 						   + "AS emp INNER JOIN plsdb.employee_project AS emp_proj ON emp.emp_id = emp_proj.employee_id "
 						   + "INNER JOIN plsdb.employee_seat AS emp_seat ON emp.emp_id = emp_seat.emp_id "
 						   + "INNER JOIN plsdb.seat AS seat ON emp_seat.seat_id = seat.seat_id "
+						   + "INNER JOIN plsdb.location AS loc ON seat.bldg_id = loc.bldg_id "
 						   + "WHERE username = ? AND password = ?";
 			
 			ps = conn.prepareStatement(query);
@@ -50,9 +54,50 @@ public class LogInDao extends BaseDao {
 				
 				// Get user data
 				while(rs.next()) {
-					user.setUserFirstName(rs.getString("first_name"));
-					user.setUserLastName(rs.getString("last_name"));
-					user.setUserRole(rs.getString("role"));
+					
+					//int empId = rs.getInt("emp_id");
+					
+					if(user.getUserName() == rs.getString("username")) {
+						
+						String project = rs.getString("proj_alias"); 
+						boolean isProjectExistInList = user.getEmployeeProjects().contains(project);
+						
+						// Add new project if does not project not exist in list
+						if(!isProjectExistInList) {
+							user.addToProjectList(rs.getString("proj_alias"));
+						}
+						
+						// Instantiate SeatBean
+						SeatBean seat = new SeatBean();
+						
+						// set seat info values
+						seat = setSeatData();
+						
+						// Add seat to the employee seat list, if not the same
+						if(user.getListOfSeats().contains(seat)) {
+							user.addToSeatList(seat);
+						}
+					} else { 
+						SeatBean seat = new SeatBean();
+						EmployeeBean employee = new EmployeeBean();
+						
+						// Set employee infos values
+						employee = setEmployeeData();
+						
+						// transfer employee info to user info
+						user.setEmployeeId(employee.getEmployeeId());
+						user.setUserRole(rs.getString("emp.role"));
+						user.setEmployeeFirstName(employee.getEmployeeFirstName());
+						user.setEmployeeLastName(employee.getEmployeeLastName());
+						user.setEmployeeProjects(employee.getEmployeeProjects());
+						user.setEmployeeShift(employee.getEmployeeShift());
+											
+						// set seat info values
+						seat = setSeatData();
+						
+						// Add seat to the employee seat list
+						user.addToSeatList(seat);
+					}
 				}
 			}			
 		} catch (SQLException se) {
@@ -73,7 +118,14 @@ public class LogInDao extends BaseDao {
 
 	@Override
 	protected EmployeeBean setEmployeeData() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		EmployeeBean employee = new EmployeeBean();
+		
+		employee.setEmployeeId(rs.getInt("emp_id"));
+		employee.setEmployeeFirstName(rs.getString("first_name"));
+		employee.setEmployeeLastName(rs.getString("last_name"));
+		employee.setEmployeeShift(rs.getString("shift"));
+		employee.addToProjectList(rs.getString("proj_alias"));
+		
+		return employee;
 	}
 }
